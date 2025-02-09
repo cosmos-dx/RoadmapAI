@@ -15,7 +15,6 @@ app = Flask(__name__)
 
 llm = LLM(model="gemini/gemini-2.0-flash-exp", temperature=0.7)
 
-system = TechRoadmapSystem()
 
 class RoadmapGenerator:
     """Handles roadmap generation based on user input."""
@@ -248,7 +247,7 @@ def generate_roadmap():
 
     if not user_input or not roadmap_type:
         return jsonify({"error": "Both 'query' and 'type' parameters are required"}), 400
-
+    system = TechRoadmapSystem()
     try:
         if roadmap_type == "full":
             roadmap = system.generate_full_roadmap(user_input)
