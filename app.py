@@ -18,7 +18,7 @@ gemini_api_key = os.getenv("GEMINI_API_KEY")
 groq_api_key = os.getenv("GROQ_API_KEY")
 google_api_key = os.getenv("GOOGLE_API_KEY")
 app = Flask(__name__)
-CORS(app) 
+CORS(app, resources={r"/*": {"origins": "*", "methods": ["GET", "POST"], "allow_headers": ["Content-Type"]}})
 llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.7,google_api_key=gemini_api_key)
 # llm = LLM(model="gemini/gemini-2.0-flash-exp", temperature=0.7, google_api_key=gemini_api_key)
 
