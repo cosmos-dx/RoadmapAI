@@ -1,0 +1,9 @@
+langchain-google-genai
+google-generativeai
+crewai
+langchain
+openai
+langchain_google_genai
+flask
+python-dotenv
+requests
