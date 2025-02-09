@@ -7,14 +7,18 @@ import re
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
-llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.7)
 
 load_dotenv()
 
+# Access environment variables
+serper_api_key = os.getenv("SERPER_API_KEY")
+gemini_api_key = os.getenv("GEMINI_API_KEY")
+groq_api_key = os.getenv("GROQ_API_KEY")
+google_api_key = os.getenv("GOOGLE_API_KEY")
 app = Flask(__name__)
 
-llm = LLM(model="gemini/gemini-2.0-flash-exp", temperature=0.7)
-
+llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.7,google_api_key=gemini_api_key)
+# llm = LLM(model="gemini/gemini-2.0-flash-exp", temperature=0.7, google_api_key=gemini_api_key)
 
 class RoadmapGenerator:
     """Handles roadmap generation based on user input."""
@@ -239,14 +243,17 @@ class TechRoadmapSystem:
 #     print(roadmap_basic)
 
 
-@app.route('/generate-roadmap', methods=['GET'])
+@app.route('/generate-roadmap', methods=['POST'])
 def generate_roadmap():
     """Endpoint to generate a tech roadmap based on query and type."""
-    user_input = request.args.get('query')
-    roadmap_type = request.args.get('type')
+    data = request.get_json()
 
-    if not user_input or not roadmap_type:
-        return jsonify({"error": "Both 'query' and 'type' parameters are required"}), 400
+    if not data or 'query' not in data or 'type' not in data:
+        return jsonify({"error": "Both 'query' and 'type' fields are required in the JSON body"}), 400
+
+    user_input = data['query']
+    roadmap_type = data['type']
+
     system = TechRoadmapSystem()
     try:
         if roadmap_type == "full":
@@ -260,7 +267,6 @@ def generate_roadmap():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
 
 
 if __name__ == '__main__':
