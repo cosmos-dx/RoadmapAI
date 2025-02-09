@@ -264,4 +264,4 @@ def generate_roadmap():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
