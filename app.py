@@ -7,6 +7,8 @@ import re
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
+from flask_cors import CORS
+
 
 load_dotenv()
 
@@ -16,7 +18,7 @@ gemini_api_key = os.getenv("GEMINI_API_KEY")
 groq_api_key = os.getenv("GROQ_API_KEY")
 google_api_key = os.getenv("GOOGLE_API_KEY")
 app = Flask(__name__)
-
+CORS(app) 
 llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.7,google_api_key=gemini_api_key)
 # llm = LLM(model="gemini/gemini-2.0-flash-exp", temperature=0.7, google_api_key=gemini_api_key)
 
